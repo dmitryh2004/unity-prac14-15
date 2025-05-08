@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class Damagable : MonoBehaviour
 {
@@ -6,6 +7,8 @@ public class Damagable : MonoBehaviour
     [SerializeField] int maxHealth;
 
     [SerializeField] int team;
+
+    public event Action OnDeathEvent;
 
     public void InitHealth()
     {
@@ -55,6 +58,7 @@ public class Damagable : MonoBehaviour
     void Die()
     {
         OnDeath();
+        OnDeathEvent?.Invoke();
         Destroy(gameObject);
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] int id;
     float elixirCount = 0.0f;
     float maxElixirCount = 15f;
     [SerializeField] float baseElixirGenerationSpeed = 0.5f;
@@ -11,6 +12,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] List<ElixirAccelerator> accelerators;
     [SerializeField] PlayerUIController uiController;
     [SerializeField] TownHall townHall;
+    [SerializeField] TownHall enemyTownHall;
+
+    [SerializeField] GameObject deathScreen;
+    [SerializeField] GameObject victoryScreen;
+
     [SerializeField] Color teamColor;
 
     public Color GetTeamColor()
@@ -20,7 +26,12 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        deathScreen.SetActive(false);
+        victoryScreen.SetActive(false);
         elixirGenerationSpeed = baseElixirGenerationSpeed;
+        uiController.ChangeColor();
+        townHall.OnDeathEvent += TownHallDestroyed;
+        enemyTownHall.OnDeathEvent += EnemyTownHallDestroyed;
     }
 
     private void Update()
@@ -47,12 +58,38 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public bool CanPlaceWall(int index)
+    {
+        return !townHall.HasWall(index);
+    }
+
+    public void SpawnWall(int spawnpointIndex)
+    {
+        if ((elixirCount >= 15f) && (!townHall.HasWall(spawnpointIndex)))
+        {
+            elixirCount -= 15f;
+            townHall.SpawnWall(spawnpointIndex);
+        }
+    }
+
     public void RecalculateElixirGenerationSpeed()
     {
         elixirGenerationSpeed = baseElixirGenerationSpeed;
         foreach(ElixirAccelerator ea in accelerators)
         {
-            elixirGenerationSpeed += ea.GetElixirBoost();
+            elixirGenerationSpeed += ea.GetElixirBoost(id);
         }
+    }
+
+    void TownHallDestroyed()
+    {
+        deathScreen.SetActive(true);
+        enemyTownHall.OnDeathEvent -= EnemyTownHallDestroyed;
+    }
+
+    void EnemyTownHallDestroyed()
+    {
+        victoryScreen.SetActive(true);
+        townHall.OnDeathEvent -= TownHallDestroyed;
     }
 }

@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -23,7 +24,7 @@ public class CameraController : MonoBehaviour
 
         // Движение камеры по направлению
         transform.position += move.normalized * moveSpeed * Time.deltaTime;
-        
+
         float x = Mathf.Max(xNegEdge, Mathf.Min(transform.position.x, xPosEdge));
         float z = Mathf.Max(zNegEdge, Mathf.Min(transform.position.z, zPosEdge));
 

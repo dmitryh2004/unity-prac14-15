@@ -68,8 +68,8 @@ public class ElixirAccelerator : MonoBehaviour
         return (owner == team) ? influence : 0;
     }
 
-    public float GetElixirBoost()
+    public float GetElixirBoost(int team)
     {
-        return maxElixirBoost * influence / maxInfluence;
+        return maxElixirBoost * GetInfluence(team) / maxInfluence;
     }
 }

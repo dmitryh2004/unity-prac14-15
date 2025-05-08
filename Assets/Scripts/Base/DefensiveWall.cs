@@ -6,6 +6,11 @@ public class DefensiveWall : Damagable
     int index;
     TownHall townHall;
 
+    private void Start()
+    {
+        InitHealth();
+    }
+
     public void SetTownHall(TownHall townHall, int index)
     {
         this.townHall = townHall;
@@ -29,5 +34,18 @@ public class DefensiveWall : Damagable
     {
         base.Heal(amount);
         healthBarController.UpdateHealth(GetHealth(), GetMaxHealth());
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Damagable targetDamagable;
+        if (other.gameObject.TryGetComponent<Damagable>(out targetDamagable))
+        {
+            if (targetDamagable.GetTeam() != GetTeam())
+            {
+                Debug.Log(gameObject.name + " (team " + GetTeam() + "): collided with " + other.gameObject.name + " (team " + targetDamagable.GetTeam() + ")");
+                targetDamagable.TakeDamage(targetDamagable.GetMaxHealth());
+            }
+        }
     }
 }

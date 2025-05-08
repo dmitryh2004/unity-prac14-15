@@ -21,6 +21,10 @@ public class TownHall : Damagable
     private void Start()
     {
         InitHealth();
+        walls = new List<GameObject>();
+        walls.Add(null);
+        walls.Add(null);
+        walls.Add(null);
         teamColor = GameController.Instance.GetPlayerColor(GetTeam());
         for (int i = 0; i < model.childCount; i++)
         {
@@ -35,13 +39,18 @@ public class TownHall : Damagable
 
     public void SpawnWall(int index)
     {
-        if (walls[index] = null)
+        if (walls[index] == null)
         {
             GameObject wall = GameObject.Instantiate(wallPrefab, wallsSpawnpoints[index]);
             wall.GetComponent<DefensiveWall>().SetTownHall(this, index);
             wall.transform.GetChild(0).GetComponent<MeshRenderer>().material.color = teamColor;
             walls[index] = wall;
         }
+    }
+
+    public bool HasWall(int index)
+    {
+        return walls[index] != null;
     }
 
     public override void TakeDamage(int damage)

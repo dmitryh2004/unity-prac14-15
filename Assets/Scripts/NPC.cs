@@ -56,16 +56,16 @@ public class NPC : Damagable
             TakeDamage(GetMaxHealth());
         }
     }
-
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
         Debug.Log(gameObject.name + ": collision detected");
         Damagable targetDamagable;
-        if (collision.gameObject.TryGetComponent<Damagable>(out targetDamagable))
+        if (other.gameObject.TryGetComponent<Damagable>(out targetDamagable))
         {
+            Debug.Log(gameObject.name + ": Collision with damagable detected");
             if (targetDamagable.GetTeam() != GetTeam())
             {
-                Debug.Log(gameObject.name + ": collided with " + collision.gameObject.name);
+                Debug.Log(gameObject.name + " (team " + GetTeam() + "): collided with " + other.gameObject.name + " (team " + targetDamagable.GetTeam() + ")");
                 targetDamagable.TakeDamage(damage);
             }
         }
