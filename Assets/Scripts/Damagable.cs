@@ -5,9 +5,21 @@ public class Damagable : MonoBehaviour
     int health;
     [SerializeField] int maxHealth;
 
+    [SerializeField] int team;
+
     public void InitHealth()
     {
         health = maxHealth;
+    }
+
+    public void SetTeam(int team)
+    {
+        this.team = team;
+    }
+
+    public int GetTeam()
+    {
+        return team;
     }
 
     public int GetHealth()

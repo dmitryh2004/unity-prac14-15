@@ -22,6 +22,7 @@ public class NPC : Damagable
         SelectNextTarget();
     }
 
+
     void SelectNextTarget()
     {
         if (agent == null)
@@ -36,6 +37,7 @@ public class NPC : Damagable
             target = null; return;
         }
         target = waypoints[0];
+        if (target == null) return;
         agent.SetDestination(target.position);
         waypoints.RemoveAt(0);
     }
@@ -61,8 +63,11 @@ public class NPC : Damagable
         Damagable targetDamagable;
         if (collision.gameObject.TryGetComponent<Damagable>(out targetDamagable))
         {
-            Debug.Log(gameObject.name + ": collided with " + collision.gameObject.name);
-            targetDamagable.TakeDamage(damage);
+            if (targetDamagable.GetTeam() != GetTeam())
+            {
+                Debug.Log(gameObject.name + ": collided with " + collision.gameObject.name);
+                targetDamagable.TakeDamage(damage);
+            }
         }
     }
 }
