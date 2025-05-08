@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class CameraController : NetworkBehaviour
 {
     [SerializeField] float edgeSize = 20f; // ширина зоны у края экрана в пикселях
     [SerializeField] float moveSpeed = 10f; // скорость движения камеры
@@ -10,6 +10,7 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
+        if (!IsOwner) return;
         Vector3 move = Vector3.zero;
 
         if (Input.mousePosition.x < edgeSize)

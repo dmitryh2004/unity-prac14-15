@@ -30,8 +30,21 @@ public class PlayerController : MonoBehaviour
         victoryScreen.SetActive(false);
         elixirGenerationSpeed = baseElixirGenerationSpeed;
         uiController.ChangeColor();
-        townHall.OnDeathEvent += TownHallDestroyed;
-        enemyTownHall.OnDeathEvent += EnemyTownHallDestroyed;
+    }
+
+    public void SetTownHalls(TownHall th, TownHall eth)
+    {
+        townHall = th;
+        enemyTownHall = eth;
+        if (townHall)
+            townHall.OnDeathEvent += TownHallDestroyed;
+        if (enemyTownHall)
+            enemyTownHall.OnDeathEvent += EnemyTownHallDestroyed;
+    }
+
+    public void SetEA(List<ElixirAccelerator> ea)
+    {
+        accelerators = new List<ElixirAccelerator>(ea);
     }
 
     private void Update()

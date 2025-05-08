@@ -18,6 +18,10 @@ public class ElixirAccelerator : MonoBehaviour
     private void Start()
     {
         mr = GetComponent<MeshRenderer>();
+    }
+
+    public void UpdateColors()
+    {
         team1Color = GameController.Instance.GetPlayerColor(1);
         team2Color = GameController.Instance.GetPlayerColor(2);
     }

@@ -30,6 +30,24 @@ public class TownHall : Damagable
         {
             model.GetChild(i).GetComponent<MeshRenderer>().material.color = teamColor;
         }
+        SpawnWall(0);
+        SpawnWall(1);
+        SpawnWall(2);
+    }
+
+    public void Repaint()
+    {
+        for (int i = 0; i < model.childCount; i++)
+        {
+            model.GetChild(i).GetComponent<MeshRenderer>().material.color = teamColor;
+        }
+        foreach(GameObject wall in walls)
+        {
+            if (wall != null)
+            {
+                wall.transform.GetChild(0).GetComponent<MeshRenderer>().material.color = teamColor;
+            }
+        }
     }
 
     public void ClearWall(int index)
