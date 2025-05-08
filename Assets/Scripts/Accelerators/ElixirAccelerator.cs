@@ -15,28 +15,36 @@ public class ElixirAccelerator : MonoBehaviour
 
     [SerializeField] TMP_Text acceleratorText;
 
-    [SerializeField] TownHall th1, th2;
-
     private void Start()
     {
         mr = GetComponent<MeshRenderer>();
-        team1Color = th1.teamColor;
-        team2Color = th2.teamColor;
+        team1Color = GameController.Instance.GetPlayerColor(1);
+        team2Color = GameController.Instance.GetPlayerColor(2);
     }
+
+    float MixColorComponent(float a, float b, float m)
+    {
+        return a + (b - a) * m;
+    }
+
+    Color BlendColor(int owner)
+    {
+        Color result = noOwnerColor;
+        if (owner == 0) return result;
+
+        Color blendingColor = (owner == 1) ? team1Color : team2Color;
+        float mixFactor = (float)influence / maxInfluence;
+
+        result.a = MixColorComponent(noOwnerColor.a, blendingColor.a, mixFactor);
+        result.r = MixColorComponent(noOwnerColor.r, blendingColor.r, mixFactor);
+        result.g = MixColorComponent(noOwnerColor.g, blendingColor.g, mixFactor);
+        result.b = MixColorComponent(noOwnerColor.b, blendingColor.b, mixFactor);
+        return result;
+    }
+
     private void Update()
     {
-        switch (owner)
-        {
-            case 0:
-                mr.material.color = noOwnerColor;
-                break;
-            case 1:
-                mr.material.color = team1Color;
-                break;
-            case 2:
-                mr.material.color = team2Color;
-                break;
-        }
+        mr.material.color = BlendColor(owner);
     }
 
     public void AddInfluence(int team)

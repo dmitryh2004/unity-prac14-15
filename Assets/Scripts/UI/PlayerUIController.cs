@@ -7,9 +7,9 @@ public class PlayerUIController : MonoBehaviour
     [SerializeField] TMP_Text elixirText;
     [SerializeField] Button spawn1, spawn2, spawn3;
 
-    public void UpdateElixir(float elixir)
+    public void UpdateElixir(float elixir, float elixirSpeed)
     {
-        elixirText.SetText("Ёликсир: " + elixir.ToString("0.0"));
+        elixirText.SetText("Ёликсир: " + elixir.ToString("0.0") + " (+" + elixirSpeed.ToString("0.0") + "/с)");
 
         spawn1.image.color = (elixir >= 1f) ? Color.white : Color.gray;
         spawn2.image.color = (elixir >= 1f) ? Color.white : Color.gray;

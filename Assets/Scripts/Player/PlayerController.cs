@@ -11,6 +11,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] List<ElixirAccelerator> accelerators;
     [SerializeField] PlayerUIController uiController;
     [SerializeField] TownHall townHall;
+    [SerializeField] Color teamColor;
+
+    public Color GetTeamColor()
+    {
+        return teamColor;
+    }
 
     private void Start()
     {
@@ -24,7 +30,7 @@ public class PlayerController : MonoBehaviour
         elixirCount += elixirGenerationSpeed * Time.deltaTime;
         elixirCount = Mathf.Min(elixirCount, maxElixirCount);
 
-        uiController.UpdateElixir(GetElixirCount());
+        uiController.UpdateElixir(GetElixirCount(), elixirGenerationSpeed);
     }
 
     public float GetElixirCount()

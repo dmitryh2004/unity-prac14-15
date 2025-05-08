@@ -10,22 +10,44 @@ public class TownHall : Damagable
     public Color teamColor;
     [SerializeField] Transform model;
     [SerializeField] GameObject npcPrefab;
+    [SerializeField] GameObject wallPrefab;
     [SerializeField] List<Transform> spawnpoints;
     [SerializeField] FireController fireController;
+    [SerializeField] HealthBarController healthBarController;
     [SerializeField] List<Waypoints> ways;
+    List<GameObject> walls;
+    [SerializeField] List<Transform> wallsSpawnpoints;
 
     private void Start()
     {
         InitHealth();
+        teamColor = GameController.Instance.GetPlayerColor(GetTeam());
         for (int i = 0; i < model.childCount; i++)
         {
             model.GetChild(i).GetComponent<MeshRenderer>().material.color = teamColor;
         }
     }
 
+    public void ClearWall(int index)
+    {
+        walls[index] = null;
+    }
+
+    public void SpawnWall(int index)
+    {
+        if (walls[index] = null)
+        {
+            GameObject wall = GameObject.Instantiate(wallPrefab, wallsSpawnpoints[index]);
+            wall.GetComponent<DefensiveWall>().SetTownHall(this, index);
+            wall.transform.GetChild(0).GetComponent<MeshRenderer>().material.color = teamColor;
+            walls[index] = wall;
+        }
+    }
+
     public override void TakeDamage(int damage)
     {
         base.TakeDamage(damage);
+        healthBarController.UpdateHealth(GetHealth(), GetMaxHealth());
         fireController.UpdateFire((float) GetHealth() / GetMaxHealth());
     }
 
